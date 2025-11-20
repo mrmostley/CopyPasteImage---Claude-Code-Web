@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Report - Claude Code Image Paste</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+    .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+    .header p { opacity: 0.9; font-size: 1.1em; }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      background: #f7fafc;
+    }
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-4px); }
+    .stat-card h3 { color: #718096; font-size: 0.9em; text-transform: uppercase; margin-bottom: 10px; }
+    .stat-card .value { font-size: 2.5em; font-weight: bold; color: #2d3748; }
+    .stat-card.pass .value { color: #10a37f; }
+    .stat-card.fail .value { color: #ef4444; }
+    .stat-card.skip .value { color: #f59e0b; }
+    .suite {
+      border-top: 2px solid #e2e8f0;
+      padding: 30px;
+    }
+    .suite-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    .suite-header h2 { color: #2d3748; font-size: 1.5em; }
+    .suite-header .badge {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+    .badge.success { background: #d1fae5; color: #065f46; }
+    .badge.warning { background: #fed7aa; color: #92400e; }
+    .badge.error { background: #fecaca; color: #991b1b; }
+    .test-list { margin-top: 20px; }
+    .test-item {
+      background: #f7fafc;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border-left: 4px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .test-item.pass { border-left-color: #10a37f; background: #ecfdf5; }
+    .test-item.fail { border-left-color: #ef4444; background: #fef2f2; }
+    .test-item.skip { border-left-color: #f59e0b; background: #fffbeb; }
+    .test-item .name { font-weight: 600; color: #2d3748; margin-bottom: 5px; }
+    .test-item .message { color: #64748b; font-size: 0.9em; margin-top: 5px; }
+    .test-item .status {
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    .status.PASS { background: #10a37f; color: white; }
+    .status.FAIL { background: #ef4444; color: white; }
+    .status.SKIP { background: #f59e0b; color: white; }
+    .footer {
+      background: #2d3748;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .recommendation {
+      margin: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      border: 2px solid;
+    }
+    .recommendation.approve {
+      background: #ecfdf5;
+      border-color: #10a37f;
+      color: #065f46;
+    }
+    .recommendation.conditional {
+      background: #fffbeb;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+    .recommendation.reject {
+      background: #fef2f2;
+      border-color: #ef4444;
+      color: #991b1b;
+    }
+    .recommendation h3 { margin-bottom: 10px; font-size: 1.3em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🧪 Test Report</h1>
+      <p>Claude Code Image Paste Extension</p>
+      <p style="margin-top: 10px; opacity: 0.8;">
+        Browser: <strong>CHROMIUM</strong> |
+        Date: <strong>11/20/2025, 7:36:23 PM</strong>
+      </p>
+    </div>
+
+    <div class="summary">
+      <div class="stat-card">
+        <h3>Total Tests</h3>
+        <div class="value">38</div>
+      </div>
+      <div class="stat-card pass">
+        <h3>Passed</h3>
+        <div class="value">2</div>
+      </div>
+      <div class="stat-card fail">
+        <h3>Failed</h3>
+        <div class="value">18</div>
+      </div>
+      <div class="stat-card skip">
+        <h3>Skipped</h3>
+        <div class="value">16</div>
+      </div>
+      <div class="stat-card">
+        <h3>Pass Rate</h3>
+        <div class="value" style="color: #ef4444">9.09%</div>
+      </div>
+      <div class="stat-card">
+        <h3>Duration</h3>
+        <div class="value" style="font-size: 1.8em;">0.8s</div>
+      </div>
+    </div>
+
+    
+    <div class="recommendation reject">
+      <h3>❌ DO NOT RELEASE</h3>
+      <p>Critical issues found. Fix failed tests before proceeding.</p>
+    </div>
+
+    
+    <div class="suite">
+      <div class="suite-header">
+        <h2>TEST-01: Installation & Loading</h2>
+        <span class="badge warning">0/3 passed (0.00%)</span>
+      </div>
+      <div class="test-list">
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-01.2: Chrome Loading</div>
+              <div class="message">Failed to launch browser: browserType.launch: Target page, context or browser has been closed
+Browser logs:
+
+╔════════════════════════════════════════════════════════════════════════════════════════════════╗
+║ Looks like you launched a headed browser without having a XServer running.                     ║
+║ Set either 'headless: true' or use 'xvfb-run <your-playwright-app>' before running Playwright. ║
+║                                                                                                ║
+║ <3 Playwright Team                                                                             ║
+╚════════════════════════════════════════════════════════════════════════════════════════════════╝
+Call log:
+  - <launching> /root/.cache/ms-playwright/chromium-1194/chrome-linux/chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --disable-extensions-except=/home/user/ClaudeWebCode_CopyPaste --load-extension=/home/user/ClaudeWebCode_CopyPaste --user-data-dir=/tmp/playwright_chromiumdev_profile-8Lr7nH --remote-debugging-pipe --no-startup-window
+  - <launched> pid=966
+  - [pid=966][err] [973:973:1120/193623.329402:ERROR:base/files/file_path_watcher_inotify.cc:923] Failed to read /proc/sys/fs/inotify/max_user_watches
+  - [pid=966][err] [974:974:1120/193623.331282:ERROR:base/files/file_path_watcher_inotify.cc:923] Failed to read /proc/sys/fs/inotify/max_user_watches
+  - [pid=966][err] [966:979:1120/193623.348892:ERROR:base/files/file_path_watcher_inotify.cc:923] Failed to read /proc/sys/fs/inotify/max_user_watches
+  - [pid=966][err] [966:980:1120/193623.349106:ERROR:dbus/bus.cc:408] Failed to connect to the bus: Failed to connect to socket /run/dbus/system_bus_socket: No such file or directory
+  - [pid=966][err] [966:966:1120/193623.356628:ERROR:ui/ozone/platform/x11/ozone_platform_x11.cc:249] Missing X server or $DISPLAY
+  - [pid=966][err] [966:966:1120/193623.356665:ERROR:ui/aura/env.cc:257] The platform failed to initialize.  Exiting.
+  - [pid=966] <gracefully close start>
+  - [pid=966] <kill>
+  - [pid=966] <will force kill>
+  - [pid=966][err] [1120/193623.374276:ERROR:third_party/crashpad/crashpad/util/linux/socket.cc:182] incorrect payload size 0
+  - [pid=966][err] [1120/193623.377183:ERROR:third_party/crashpad/crashpad/util/linux/socket.cc:182] incorrect payload size 0
+  - [pid=966] <process did exit: exitCode=1, signal=null>
+  - [pid=966] starting temporary directories cleanup
+  - [pid=966] finished temporary directories cleanup
+  - [pid=966] <gracefully close end>
+</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-01.4: Content Script Init</div>
+              <div class="message">Browser not loaded</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-01.5: Permissions</div>
+              <div class="message">Page not loaded</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-01.6: Icon Display</div>
+              <div class="message">Manual verification required: Check if extension icon appears in browser toolbar</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-01.7: Library Loading</div>
+              <div class="message">Page not loaded</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-01.8: Toast System</div>
+              <div class="message">Page not loaded</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+      </div>
+    </div>
+    <div class="suite">
+      <div class="suite-header">
+        <h2>TEST-02: Image Paste Detection</h2>
+        <span class="badge error">1/10 passed (10.00%)</span>
+      </div>
+      <div class="test-list">
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-02.1: Text vs Image</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-02.2: PNG Detection</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-02.3: JPEG Detection</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-02.4: WebP Support</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item pass">
+            <div>
+              <div class="name">TC-02.5: Small Image (No Compress)</div>
+              <div class="message">Small image detected: 86.74 KB (< 500KB, no compression needed)</div>
+            </div>
+            <span class="status PASS">PASS</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-02.6: Medium Image (Light)</div>
+              <div class="message">Image size 138.09 KB outside expected range</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-02.7: Large Image (Moderate)</div>
+              <div class="message">Image size 450.53 KB outside expected range</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-02.8: Huge Image (Aggressive)</div>
+              <div class="message">Image size 852.33 KB outside expected range</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-02.9: Oversized Error</div>
+              <div class="message">Test image not large enough for this test</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-02.10: Empty Clipboard</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-02.11: Multi-Paste</div>
+              <div class="message">Requires manual testing</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-02.12: CDN Fallback</div>
+              <div class="message">Requires network manipulation</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-02.13: Offline Test</div>
+              <div class="message">Extension works offline by design</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-02.14: Performance</div>
+              <div class="message">Performance metrics collected in other tests</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+      </div>
+    </div>
+    <div class="suite">
+      <div class="suite-header">
+        <h2>TEST-03: Image Injection</h2>
+        <span class="badge error">1/9 passed (11.11%)</span>
+      </div>
+      <div class="test-list">
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-03.1: Input Detection</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item pass">
+            <div>
+              <div class="name">TC-03.2: Markdown Format</div>
+              <div class="message">Markdown format validation passed</div>
+            </div>
+            <span class="status PASS">PASS</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-03.3: ContentEditable Inject</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-03.4: Textarea Fallback</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-03.5: React Events</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-03.6: Image Preview</div>
+              <div class="message">Image preview requires Claude.ai UI - manual testing required</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-03.7: Send to Claude</div>
+              <div class="message">Requires authentication and live Claude.ai session - manual testing required</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-03.8: Multiple Images</div>
+              <div class="message">Requires live Claude.ai session</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-03.9: Mixed Content</div>
+              <div class="message">Requires live Claude.ai session</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-03.10: Cursor Position</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-03.11: Chat States</div>
+              <div class="message">Requires live Claude.ai session</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-03.12: Clipboard Fallback</div>
+              <div class="message">Covered in paste detection tests</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-03.13: Page Reload</div>
+              <div class="message">Cannot read properties of undefined (reading 'goto')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-03.14: Multiple Tabs</div>
+              <div class="message">Cannot read properties of undefined (reading 'newPage')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+          <div class="test-item skip">
+            <div>
+              <div class="name">TC-03.15: Send Failure</div>
+              <div class="message">Requires live Claude.ai session</div>
+            </div>
+            <span class="status SKIP">SKIP</span>
+          </div>
+        
+          <div class="test-item fail">
+            <div>
+              <div class="name">TC-03.16: Console Errors</div>
+              <div class="message">Cannot read properties of undefined (reading 'on')</div>
+            </div>
+            <span class="status FAIL">FAIL</span>
+          </div>
+        
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Generated by Claude Code Image Paste Automated Test Suite</p>
+      <p style="margin-top: 10px; opacity: 0.8;">v1.0.0</p>
+    </div>
+  </div>
+</body>
+</html>
