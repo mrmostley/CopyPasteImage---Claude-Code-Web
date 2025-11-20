@@ -5,8 +5,8 @@
   "description": "Paste images into Claude Web Code - works on mobile & desktop Firefox!",
   
   "author": "Open Source Community",
-  "homepage_url": "https://github.com/[your-username]/claude-code-image-paste",
-  
+  "homepage_url": "https://github.com/mrmostley/ClaudeWebCode_CopyPaste",
+
   "browser_specific_settings": {
     "gecko": {
       "id": "[email protected]",
