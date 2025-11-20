@@ -396,31 +396,159 @@ ${sizeInfo}`, 'success', 3000);
   }
 
   async injectImage(base64Data) {
-    // TODO: Find Claude Code input element and inject image
-    // This will need inspection of claude.ai/code DOM structure
-    
-    // For now, just log and copy to clipboard as markdown
+    // Multi-strategy injection for Claude Code
+    // Tries multiple methods to find and inject into the input field
+
     const markdown = `![pasted-image](${base64Data})`;
-    
-    // Try to find input element
-    const input = document.querySelector('[contenteditable="true"]') 
-                || document.querySelector('textarea')
-                || document.querySelector('input[type="text"]');
-    
-    if (input) {
-      // Insert at cursor or append
-      if (input.contentEditable === 'true') {
-        input.focus();
-        document.execCommand('insertHTML', false, markdown);
-      } else {
-        input.value += markdown;
-        input.dispatchEvent(new Event('input', { bubbles: true }));
+
+    // Strategy 1: ContentEditable div (most likely for modern React apps)
+    const contentEditable = this.findInputElement();
+
+    if (contentEditable) {
+      const success = await this.injectIntoContentEditable(contentEditable, markdown);
+      if (success) {
+        console.log('[Claude Paste] Image injected via contentEditable');
+        return;
       }
-      console.log('[Claude Paste] Image injected into input');
-    } else {
-      console.warn('[Claude Paste] Input element not found, copying markdown to clipboard');
-      await navigator.clipboard.writeText(markdown);
-      throw new Error('Input not found. Markdown copied to clipboard - paste manually.');
+    }
+
+    // Strategy 2: Textarea fallback
+    const textarea = document.querySelector('textarea');
+    if (textarea) {
+      const success = await this.injectIntoTextarea(textarea, markdown);
+      if (success) {
+        console.log('[Claude Paste] Image injected via textarea');
+        return;
+      }
+    }
+
+    // Strategy 3: Clipboard fallback
+    console.warn('[Claude Paste] Input element not found, copying markdown to clipboard');
+    await navigator.clipboard.writeText(markdown);
+    throw new Error('Input not found. Markdown copied to clipboard - paste manually (Ctrl+V).');
+  }
+
+  findInputElement() {
+    // Try multiple selectors for Claude Code's input field
+    const selectors = [
+      '[contenteditable="true"]',
+      '[role="textbox"]',
+      'div[contenteditable]',
+      '.ProseMirror',  // Common rich text editor
+      '[data-slate-editor]',  // Slate editor
+      'div.editor',
+      'div[class*="input"]',
+      'div[class*="editor"]'
+    ];
+
+    for (const selector of selectors) {
+      const elements = document.querySelectorAll(selector);
+      for (const el of elements) {
+        // Check if element is visible and editable
+        if (this.isElementVisible(el) && !el.disabled && !el.readOnly) {
+          return el;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  isElementVisible(el) {
+    if (!el) return false;
+    const style = window.getComputedStyle(el);
+    return style.display !== 'none'
+        && style.visibility !== 'hidden'
+        && style.opacity !== '0'
+        && el.offsetWidth > 0
+        && el.offsetHeight > 0;
+  }
+
+  async injectIntoContentEditable(element, markdown) {
+    try {
+      element.focus();
+
+      // Method 1: execCommand (deprecated but widely supported)
+      if (document.execCommand) {
+        const success = document.execCommand('insertHTML', false, markdown);
+        if (success) {
+          this.triggerReactChange(element);
+          return true;
+        }
+      }
+
+      // Method 2: Selection API
+      const selection = window.getSelection();
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+
+        const textNode = document.createTextNode(markdown);
+        range.insertNode(textNode);
+
+        // Move cursor after inserted text
+        range.setStartAfter(textNode);
+        range.setEndAfter(textNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        this.triggerReactChange(element);
+        return true;
+      }
+
+      // Method 3: Direct innerHTML manipulation (last resort)
+      element.innerHTML += markdown;
+      this.triggerReactChange(element);
+      return true;
+
+    } catch (error) {
+      console.warn('[Claude Paste] ContentEditable injection failed:', error);
+      return false;
+    }
+  }
+
+  async injectIntoTextarea(element, markdown) {
+    try {
+      element.focus();
+
+      const start = element.selectionStart;
+      const end = element.selectionEnd;
+      const text = element.value;
+
+      // Insert at cursor position
+      element.value = text.substring(0, start) + markdown + text.substring(end);
+
+      // Move cursor after inserted text
+      element.selectionStart = element.selectionEnd = start + markdown.length;
+
+      // Trigger React/input events
+      this.triggerReactChange(element);
+      return true;
+
+    } catch (error) {
+      console.warn('[Claude Paste] Textarea injection failed:', error);
+      return false;
+    }
+  }
+
+  triggerReactChange(element) {
+    // Trigger multiple events to ensure React picks up the change
+    const events = [
+      new Event('input', { bubbles: true, cancelable: true }),
+      new Event('change', { bubbles: true, cancelable: true }),
+      new KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: ' ' }),
+      new KeyboardEvent('keyup', { bubbles: true, cancelable: true, key: ' ' })
+    ];
+
+    events.forEach(event => element.dispatchEvent(event));
+
+    // Also try to trigger React's internal event system
+    const reactKey = Object.keys(element).find(key =>
+      key.startsWith('__reactProps') || key.startsWith('__reactEventHandlers')
+    );
+
+    if (reactKey) {
+      console.log('[Claude Paste] React fiber detected, triggering synthetic events');
     }
   }
 
