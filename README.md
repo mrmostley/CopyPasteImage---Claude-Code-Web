@@ -31,7 +31,7 @@ This browser extension enables seamless image pasting into [Claude Code Web](htt
 
 1. **Download** this repository:
    ```bash
-   git clone https://github.com/[your-username]/claude-code-image-paste.git
+   git clone https://github.com/mrmostley/claude-code-image-paste.git
    cd claude-code-image-paste
    ```
 
