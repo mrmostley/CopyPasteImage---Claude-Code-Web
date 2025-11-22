@@ -1,4 +1,4 @@
-# Claude Code Image Paste Extension
+# Claude Code Web Image Paste Extension
 
 **Lightweight Firefox extension for pasting images into Claude Web Code**
 
@@ -10,7 +10,7 @@
 
 ## Overview
 
-This browser extension enables seamless image pasting into [Claude Code](https://claude.ai/code) - Anthropic's terminal-based coding interface. Simply copy an image (screenshot, error message, diagram) and paste it directly into your coding session.
+This browser extension enables seamless image pasting into [Claude Code Web](https://claude.ai/code) - Anthropic's terminal-based coding interface. Simply copy an image (screenshot, error message, diagram) and paste it directly into your coding session.
 
 ### Key Features
 
@@ -139,7 +139,7 @@ icons/            → Extension icons (16px, 48px, 128px)
 ### Permissions Required
 
 - `clipboardRead` - Detect pasted images
-- `https://claude.ai/*` - Inject into Claude Code pages
+- `https://claude.ai/*` - Inject into Claude Code Web pages
 
 ### Browser Compatibility
 
@@ -181,7 +181,7 @@ icons/            → Extension icons (16px, 48px, 128px)
 1. Wait for page to fully load
 2. Click into the chat input before pasting
 3. Try refreshing the page
-4. Check if Claude Code UI has been updated (report issue)
+4. Check if Claude Code Web UI has been updated (report issue)
 
 ### Image Too Large Error
 
@@ -322,14 +322,14 @@ A: Theoretically yes (Manifest V3), but untested. Firefox is recommended.
 **Q: Does it send data to external servers?**
 A: No. All processing happens locally in your browser. No external requests.
 
-**Q: Will this break if Anthropic updates Claude Code?**
+**Q: Will this break if Anthropic updates Claude Code Web?**
 A: Possibly. The extension uses DOM selectors that may change. Report issues on GitHub.
 
 **Q: Can I paste multiple images at once?**
 A: Not in v1.0. Paste images one at a time.
 
 **Q: What happens to my pasted images?**
-A: They're converted to base64 and sent directly to Claude Code. No storage/logging.
+A: They're converted to base64 and sent directly to Claude Code Web. No storage/logging.
 
 ---
 
@@ -362,7 +362,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
-- **Anthropic** - For Claude and Claude Code
+- **Anthropic** - For Claude and Claude Code Web
 - **Open Source Community** - For browser extension best practices
 - **Contributors** - See [CONTRIBUTORS.md](CONTRIBUTORS.md)
 
