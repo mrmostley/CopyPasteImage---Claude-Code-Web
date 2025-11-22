@@ -221,7 +221,7 @@ icons/            → Extension icons (16px, 48px, 128px)
 
 ```bash
 # Clone repository
-git clone https://github.com/[your-username]/claude-code-image-paste.git
+git clone https://github.com/mrmostley/claude-code-image-paste.git
 cd claude-code-image-paste
 
 # No build step required - pure vanilla JavaScript!
@@ -356,7 +356,7 @@ Enable debug logging in Firefox console:
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-**TL;DR**: Free to use, modify, distribute. No warranty provided.
+**TL;DR**: Free to use, modify, distribute. No warranty x support provided.
 
 ---
 
