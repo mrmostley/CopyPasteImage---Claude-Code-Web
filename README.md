@@ -337,8 +337,8 @@ A: They're converted to base64 and sent directly to Claude Code Web. No storage/
 
 ### Get Help
 
-- **Bug Reports**: [GitHub Issues](https://github.com/[your-username]/claude-code-image-paste/issues)
-- **Feature Requests**: [GitHub Discussions](https://github.com/[your-username]/claude-code-image-paste/discussions)
+- **Bug Reports**: [GitHub Issues](https://github.com/mrmostley/claude-code-image-paste/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/mrmostley/claude-code-image-paste/discussions)
 - **Community**: Reddit [r/ClaudeAI](https://reddit.com/r/ClaudeAI)
 
 ### Debugging
@@ -364,7 +364,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 - **Anthropic** - For Claude and Claude Code Web
 - **Open Source Community** - For browser extension best practices
-- **Contributors** - See [CONTRIBUTORS.md](CONTRIBUTORS.md)
+
 
 ---
 
@@ -383,13 +383,13 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Links
 
-- **Repository**: https://github.com/[your-username]/claude-code-image-paste
-- **Issues**: https://github.com/[your-username]/claude-code-image-paste/issues
+- **Repository**: https://github.com/mrmostley/claude-code-image-paste
+- **Issues**: https://github.com/mrmostley/claude-code-image-paste/issues
 - **Claude Code**: https://claude.ai/code
 - **Anthropic**: https://anthropic.com
 
 ---
 
-**Made with ☕ by the open source community**
+**Made with Claude Code Web x @mrmostley**
 
 *If you find this useful, consider starring the repo and sharing with others!*
